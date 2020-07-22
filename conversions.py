@@ -125,6 +125,60 @@ def text_to_piglatin(text):
 
 
 def to_camel_case(text):
-    '''Converts dash and underscore delimited words into camel case. The capitalization of the first word will remain the same.'''
+    '''Converts dash and underscore delimited words into camel case. 
+    The capitalization of the first word will remain the same.'''
     words = text.replace('-', ' ').replace('_', ' ').split()
     return ''.join([word.title() if words.index(word) > 0 else word for word in words])
+
+
+def format_duration(seconds):
+    '''Given seconds, the fuction returns a human readable string such as 
+    "5 hours, 1 minute and 42 seconds". An input of 0 will return "now", and 
+    any non-natural nuumber will return False.'''
+    
+    if type(seconds) != int:
+        return False
+    elif seconds < 0:
+        return False
+    elif seconds == 0:
+        return 'now'
+    
+    counts = dict()
+    readable = ''
+    
+    conversions = {'year' : 365*24*60*60,
+                   'day' : 24*60*60,
+                   'hour' : 60*60,
+                   'minute' : 60,
+                   'second' : 1}
+    
+    for unit, value in conversions.items():
+        count = 0
+        
+        while True:
+            seconds -= value
+            count += 1
+                
+            if seconds < 0:
+                seconds += value
+                count -= 1
+                break
+            
+        if count == 1:
+            counts[unit] = count
+        elif count > 1:
+            counts[unit + 's'] = count
+    
+        if not seconds: break
+          
+    counts_list = list(counts.items())
+    
+    for i, ele in enumerate(counts_list):
+        if len(counts_list) - i >= 3:
+            readable += '%s %s, ' % (counts_list[i][1], counts_list[i][0])
+        elif len(counts_list) - i == 2:
+            readable += '%s %s and ' % (counts_list[i][1], counts_list[i][0])
+        else:
+            readable += '%s %s' % (counts_list[i][1], counts_list[i][0])
+            
+    return readable

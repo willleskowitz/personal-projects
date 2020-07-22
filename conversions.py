@@ -107,3 +107,18 @@ class VigenereCipher(object):
             
         return decrypted
     
+
+def text_to_piglatin(text):
+    '''Converts string of text to piglatin and ignores punctuation.'''
+    punctuation = {',', '.', '?', '!'}
+    piglatin = []
+    
+    for word in text.split():
+        if word in punctuation:
+            piglatin.append(word)
+        elif word[-1] in punctuation:
+            piglatin.append(word[1:-1] + word[0] + 'ay' + word[-1])
+        else:
+            piglatin.append(word[1:] + word[0] + 'ay')
+            
+    return ' '.join(piglatin)

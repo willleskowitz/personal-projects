@@ -122,3 +122,9 @@ def text_to_piglatin(text):
             piglatin.append(word[1:] + word[0] + 'ay')
             
     return ' '.join(piglatin)
+
+
+def to_camel_case(text):
+    '''Converts dash and underscore delimited words into camel case. The capitalization of the first word will remain the same.'''
+    words = text.replace('-', ' ').replace('_', ' ').split()
+    return ''.join([word.title() if words.index(word) > 0 else word for word in words])

@@ -6,6 +6,67 @@
 #
 """
 
+from math import floor
+
+def encode_rail_fence_cipher(string, n):    
+    rails = [[] for x in range(n)]
+    up = True
+    i = 0
+    encoded = ''
+    
+    for char in string:
+        rails[i].append(char)
+        
+        if up:
+            if i < n - 1:
+                i += 1
+            else:
+                i -= 1
+                up = False
+        else:
+            if i > 0:
+                i -= 1
+            else:
+                i += 1
+                up = True
+    
+    for rail in rails:
+        encoded += ''.join(rail)
+    
+    return encoded
+    
+def decode_rail_fence_cipher(string, n):
+    rails = [[] for x in range(n)]
+    up = True
+    i = 0
+    decoded_index = ''
+    decoded = [None for x in range(len(string))]
+    
+    for j in range(len(string)):
+        rails[i].append(j)
+        
+        if up:
+            if i < n - 1:
+                i += 1
+            else:
+                i -= 1
+                up = False
+        else:
+            if i > 0:
+                i -= 1
+            else:
+                i += 1
+                up = True
+                
+    i = 0          
+    for rail in rails:
+        for dec in rail:
+            decoded[dec] = string[i]
+            i += 1
+        
+    return ''.join(decoded)
+
+
 def roman_to_decimal(roman):
     '''Converts string of roman numerals to decimal integer.'''
     conversions = {'I' : 1,

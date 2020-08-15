@@ -160,3 +160,15 @@ class Primes:
                     primes.append(n)
                     yield n
             k += 1
+            
+    @staticmethod
+    def sieve_of_eratosthenes(max_n):
+        '''Implementation of the ancient Sieve of Eratosthenes, which will return all
+        prime numbers up to max_n as a list.'''
+        primes = [2] + list(range(3, max_n + 1, 2))
+        i = 1
+        while primes[i] < primes[-1]**0.5:
+            [primes.remove(n) for n in range(primes[i]*2, primes[-1] + 1, primes[i]) if n in primes]
+            i += 1
+        
+        return primes

@@ -15,7 +15,7 @@ give n as set of tuples. Efficiency decreases greatly when k >= 7, though the fu
 
 ### prime_generator.py
 This script contains my attempts at creating an efficient infinite prime generator. My best run generated a million primes in 
-about 28 seconds.
+about 25 seconds.
 
 ***
 ![Codewars badge](https://www.codewars.com/users/willleskowitz/badges/large)

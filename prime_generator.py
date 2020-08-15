@@ -6,10 +6,10 @@ class Primes:
     @staticmethod
     def stream():
         '''Prime generator. This method can generate a million primes in just 
-        under 30 seconds by utilizing the Miller-Rabin primality test while
+        under 25 seconds by utilizing the Miller-Rabin primality test while
         skipping common composites. The k within the isprime function controls
         the accuracy of the Miller-Rabin primality test. The test will declare
-        a composite as prime with a probability at most 4^−k. By default, k = 4.'''
+        a composite as prime with a probability at most 4^−k. By default, k = 3.'''
         
         primes = [2, 3]
         
@@ -30,7 +30,7 @@ class Primes:
                 
             return False
         
-        def isprime(n, k = 4):            
+        def isprime(n, k = 3):            
             if n % 2 == 0 or n == 3: return False
             
             d = n - 1; 

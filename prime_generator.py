@@ -16,29 +16,27 @@ class Primes:
         yield 2
         yield 3
         
-        def miller(n, d):
-            a = random.randint(2, n - 1)
-            x = pow(a, d, n)
-            if x == 1 or x == n - 1: return True
-            
-            while d != n - 1:
-                x = (x*x) % n
-                d *= 2
-                
-                if x == 1: return False
-                if x == n - 1: return True
-                
-            return False
-        
-        def isprime(n, k = 3):            
-            if n % 2 == 0 or n == 3: return False
-            
-            d = n - 1; 
-            while (d % 2 == 0): 
+        def isprime(n, k = 3):
+            r = 0
+            d = n - 1
+            while d % 2 == 0:
+                r += 1
                 d //= 2
-                
+            
             for _ in range(k):
-                if miller(n, d) == False: return False
+                a = random.randint(2, n - 1)
+                x = pow(a, d, n)
+                
+                if x == 1 or x == n - 1: continue
+            
+                cont = False
+                for _ in range(r - 1):
+                    x = pow(x, 2, n)
+                    if x == n - 1: cont = True; break
+                
+                if cont: continue
+                
+                return False
             
             return True
         

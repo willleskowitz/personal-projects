@@ -5,28 +5,27 @@ from itertools import count, cycle, compress
 
 class Primes:
     @staticmethod
-    def stream_v4():
+    def stream_v3():
         '''Efficient prime generator. This method uses a sieve that
         grows as the more primes are generated and removes unneeded entries
         to minimize memory use. This approach can generate a million primes
         in 2.9 seconds on my machine.
         
-       
         This function is based off a submission by user tzot from StackOverflow,
-        with some of my own meaningful improvements to improve efficiency. The
-        orginial function exploited the fact that all primes above 5 can be
+        with some of my own meaningful improvements to further improve efficiency.
+        The original function exploited the fact that all primes above 5 can be
         written in the form p = c*k + i (c = 30 = 2*3*5) where k is a nonnegative
         integer and 0<i<c such that gcd(i, c) = 1. Representing primes this way 
         increases generation efficiency by avoiding multiples of 2, 3, and 5.
         
-        Conveniently, more mutliples can be avoided by increasing the constant c.
+        Conveniently, more multiples can be avoided by increasing the constant c.
         If c = 2*3*5*7 = 210, all multiples of 7 can be avoided.
         Furthermore, if c = 2*3*5*7*11, all multiples of 11 can be avoided,
         and so on. The form p = c*k + i such that 0<i<c and gcd(i, c) = 1 holds
-        true. Note that primes that are a factors of c cannot be represented
+        true. Note that primes that are a factor of c cannot be represented
         this way.
         
-        I implemented this fact into the algorithm to improve generatrion
+        I implemented this fact into the algorithm to improve generation
         speeds. The sweet spot for generating a million primes seems to be
         with c = 2310, though different generation goals may benefit
         from different c values. I hope you find this useful!'''

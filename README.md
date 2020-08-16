@@ -14,8 +14,7 @@ This script contains a function that, given a positive integer n, returns all po
 give n as set of tuples. Efficiency decreases greatly when k >= 7, though the function works well for most practical applications.
 
 ### prime_generator.py
-This script contains my attempts at creating an efficient infinite prime generator. My best run generated a million primes in 
-about 5 seconds.
+This script contains my attempts at creating an efficient infinite prime generator. My best run generated a million primes in 3.1 seconds.
 
 ***
 ![Codewars badge](https://www.codewars.com/users/willleskowitz/badges/large)

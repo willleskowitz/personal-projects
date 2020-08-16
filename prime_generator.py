@@ -9,12 +9,13 @@ class Primes:
         '''My most efficient prime generator. This method uses a sieve that
         grows as the more primes are generated and removes unneeded entries
         to minimize memory use. This approach can generate a million primes
-        in just over 3.74 seconds.'''
+        in around 3.2 seconds.'''
 
         yield 2; yield 3; yield 5
         sieve = {}
-        mod = tuple([i for i in range(30) if math.gcd(i, 30) == 1])
+        mod = [i for i in range(30) if math.gcd(i, 30) == 1]
         skip = tuple([1 if n % 30 in mod else 0 for n in range(7, 37, 2)])
+        mod = frozenset(mod)
 
         for c in compress(count(7, 2), cycle(skip)):
             if c not in sieve:

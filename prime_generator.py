@@ -56,17 +56,17 @@ class Primes:
         with base 210 (2*3*5*7) rather than base 30 (2*3*5). My hunch was that
         this approach would be an improvement since multiples of 7 would be 
         skipped, though I was wrong. I included the function mostly because
-        of its novelty. It can produce a million primes in 6.38 seconds.''' 
+        of its novelty. It can produce a million primes in 4.7 seconds.''' 
         
-        start = 31; base = 210
-        initial_primes = (2, 3, 5, 7, 11, 13, 17, 19, 23, 29)
-        for prime in initial_primes:
-            yield prime
+        start = 11
+        base = 210
+        yield 2; yield 3; yield 5; yield 7
 
-        sieve = {49: 7, 121: 11, 169: 13, 289: 17, 361: 19, 529: 23, 841: 29, 961: 31}
+        sieve = {}
 
         mod = [i for i in range(base) if math.gcd(i, base) == 1]
         skip = [1 if n % base in mod else 0 for n in range(start, start + base, 2)]
+        mod = frozenset(mod)
 
         for c in compress(count(start, 2), cycle(skip)):
             if c not in sieve:

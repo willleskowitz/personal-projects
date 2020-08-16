@@ -9,77 +9,50 @@ class Primes:
         '''Efficient prime generator. This method uses a sieve that
         grows as the more primes are generated and removes unneeded entries
         to minimize memory use. This approach can generate a million primes
-        in around 3.2 seconds on my machine.
+        in 2.9 seconds on my machine.
         
-        
+       
         This function is based off a submission by user tzot from StackOverflow,
-        with some minor changes. First, mod was a hardcoded frozenset of integers. Albeit
-        this is more efficient, but it fails to explain the rationale behind it.
-        This part of the code is exploiting the fact that all primes above 30
-        (2*3*5) can be written in the form 30*k + i where k is a natural number 
-        and 1<i<30 such that gcd(i,30) = 1. Representing primes this way increases
-        generation efficiency by avoiding multiples of 2, 3, and 5.
+        with some of my own meaningful improvements to improve efficiency. The
+        orginial function exploited the fact that all primes above 5 can be
+        written in the form p = c*k + i (c = 30 = 2*3*5) where k is a nonnegative
+        integer and 0<i<c such that gcd(i, c) = 1. Representing primes this way 
+        increases generation efficiency by avoiding multiples of 2, 3, and 5.
         
-        Second, skip was a hardcoded tuple of fifteen 1's and 0's for the cycle function.
-        Instead, I included a list comprehension representing the logic of this 
-        variable. For a prime p where p >= 7, p % 30 = i such that gcd(i,30) = 1. 
-        This becomes evident when reviewing the representation p = 30*k + i.
-        Therefore, any numbers not in this format can be skipped. Hence, skip
-        represents this in a format thecycle function can read to filter these
-        cases. This can be cycled since i remains the same as k increases.
+        Conveniently, more mutliples can be avoided by increasing the constant c.
+        If c = 2*3*5*7 = 210, all multiples of 7 can be avoided.
+        Furthermore, if c = 2*3*5*7*11, all multiples of 11 can be avoided,
+        and so on. The form p = c*k + i such that 0<i<c and gcd(i, c) = 1 holds
+        true. Note that primes that are a factors of c cannot be represented
+        this way.
         
-        Lastly, the entries {9: 3, 25: 5} were removed from the sieve as they would
-        never be use since the filter skips multiples of 3's and 5's as mentioned above.
+        I implemented this fact into the algorithm to improve generatrion
+        speeds. The sweet spot for generating a million primes seems to be
+        with c = 2310, though different generation goals may benefit
+        from different c values. I hope you find this useful!'''
         
-        Any other changes made were for readability. I hope you find this useful!'''
-
-        yield 2; yield 3; yield 5
-        sieve = {}
-        start = 7
-        base = 2*3*5
-        mod = [i for i in range(base) if math.gcd(i, base) == 1]
-        skip = tuple([1 if n % base in mod else 0 for n in range(start, base + start, 2)])
-        mod = frozenset(mod)
-
-        for c in compress(count(start, 2), cycle(skip)):
-            if c not in sieve:
-                sieve[c*c] = c; yield c
-            else:
-                p = sieve.pop(c)
-                n = c + 2*p
-                while n in sieve or n % base not in mod: n += 2*p
-                sieve[n] = p
-    
-    @staticmethod
-    def stream_v3():
-        '''This prime generator uses a similar algorithm as stream_v4, though
-        with base 210 (2*3*5*7) rather than base 30 (2*3*5). My hunch was that
-        this approach would be an improvement since multiples of 7 would be 
-        skipped, though I was wrong. I included the function mostly because
-        of its novelty. It can produce a million primes in 4.7 seconds.''' 
-        
-        start = 11
-        base = 210
-        yield 2; yield 3; yield 5; yield 7
+        start = 13
+        c = 2*3*5*7*11
+        yield 2; yield 3; yield 5; yield 7; yield 11
 
         sieve = {}
 
-        mod = [i for i in range(base) if math.gcd(i, base) == 1]
-        skip = [1 if n % base in mod else 0 for n in range(start, start + base, 2)]
+        mod = [i for i in range(c) if math.gcd(i, c) == 1]
+        skip = tuple([1 if n % c in mod else 0 for n in range(start, start + c, 2)])
         mod = frozenset(mod)
 
-        for c in compress(count(start, 2), cycle(skip)):
-            if c not in sieve:
-                sieve[c*c] = c; yield c
+        for n in compress(count(start, 2), cycle(skip)):
+            if n not in sieve:
+                sieve[n*n] = n; yield n
             else:
-                p = sieve.pop(c)
-                n = c + 2*p
-                while n in sieve or n % base not in mod: n += 2*p
-                sieve[n] = p
+                p = sieve.pop(n)
+                m = n + 2*p
+                while m in sieve or m % c not in mod: m += 2*p
+                sieve[m] = p
 
     @staticmethod
     def stream_v2():
-        ''' My second attempt at creating a prime generator. This method can
+        '''My second attempt at creating a prime generator. This method can
         generate a million primes in ~25 seconds by utilizing the
         Miller-Rabin primality test while skipping common composites. The k 
         within the isprime function controls the accuracy of the Miller-Rabin 

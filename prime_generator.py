@@ -36,9 +36,8 @@ class Primes:
 
         sieve = {}
 
-        mod = [i for i in range(c) if math.gcd(i, c) == 1]
+        mod = frozenset(i for i in range(c) if math.gcd(i, c) == 1)
         skip = tuple([1 if n % c in mod else 0 for n in range(start, start + c, 2)])
-        mod = frozenset(mod)
 
         for n in compress(count(start, 2), cycle(skip)):
             if n not in sieve:

@@ -4,7 +4,7 @@ This is a repository of Python scripts I found interesting and worthwhile sharin
 
 ### prime_generator.py
 This script contains my attempts at creating an efficient infinite prime generator. My best run generated a million primes in 2.9 seconds
-on my machine.
+on my machine. This inspired my recent module *interator* which can be found on [GitHub](https://github.com/willleskowitz/interator) and [PyPi](https://pypi.org/project/interator/).
 
 ### cyclical_figurate_numbers_61.py
 This is my solution for Project Euler's problem 61. This script is my first self-made backtracking program. I thought it was a
